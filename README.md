@@ -301,4 +301,4 @@ This project was conceptualized and developed as a comprehensive demonstration o
 - Practical generative AI engineering using the official Google Gen AI SDK.
 - Modern UX/UI design principles prioritizing micro-interactions and accessibility.
 
-Developed with ❤️ by **Rudransh Khare**.
+**Rudransh Khare**.
