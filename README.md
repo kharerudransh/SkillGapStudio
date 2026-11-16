@@ -3,6 +3,7 @@
 
 > An end-to-end, full-stack MERN application powered by Google Gemini that benchmarks candidate resumes against targeted job descriptions, exposes critical competency discrepancies, generates dynamic interview scenarios, crafts a day-by-day preparation roadmap, and helps candidates enhance their resumes for specific job opportunities.
 
+LIVE- https://skill-gap-studio.vercel.app
 ---
 
 ## 📌 Executive Summary
