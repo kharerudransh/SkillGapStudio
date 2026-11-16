@@ -41,3 +41,19 @@ export async function getAllInterviewReportController(){
         );
     }
 }
+
+export async function generateResumePdf(interviewReportId){
+    try {
+        const response = await api.post(
+            `/api/ai/pdf/${interviewReportId}`,
+            null,
+            { responseType: "blob", timeout: 120000 }
+        );
+        return response.data;
+    }
+    catch(error){
+        throw new Error(
+            error.response?.data?.message || "Failed to generate resume pdf"
+        )
+    }
+}

@@ -1,6 +1,6 @@
-
+const mongoose = require("mongoose");
 const pdfParse = require("pdf-parse");
-const generateInterviewReport = require("../services/ai.service");
+const {generateInterviewReport , generateResumePdf} = require("../services/ai.service");
 const interviewReportModel = require("../model/interviewReport.model");
 
 //To generate interview report
@@ -123,6 +123,42 @@ async function getAllInterviewReportController(req,res){
         interviewReports
     });
 }
+async function generateResumePdfController(req, res) {
+    try {
+        const { interviewReportId } = req.params;
+
+        if (!mongoose.isValidObjectId(interviewReportId)) {
+            return res.status(400).json({ success: false, message: "Invalid interview report id" });
+        }
+
+        const interviewReport = await interviewReportModel.findOne({
+            _id: interviewReportId,
+            user: req.user.id,
+        });
+
+        if (!interviewReport) {
+            return res.status(404).json({ success: false, message: "Interview report not found" });
+        }
+
+        const pdfBuffer = Buffer.from(
+            await generateResumePdf({
+                resume: interviewReport.resume,
+                selfDescription: interviewReport.selfDescription,
+                jobDescription: interviewReport.jobDescription,
+            })
+        );
+
+        res.set({
+            "Content-Type": "application/pdf",
+            "Content-Length": pdfBuffer.length,
+            "Content-Disposition": `attachment; filename="resume-${Date.now()}.pdf"`,
+        });
+        return res.status(200).send(pdfBuffer);
+    } catch (error) {
+        console.error("Resume PDF generation error:", error);
+        return res.status(500).json({ success: false, message: "Failed to generate resume PDF" });
+    }
+}
 
 
-module.exports = { generateInterviewReportController ,getAllInterviewReportController, getInterviewReportByIdController};
+module.exports = { generateInterviewReportController ,getAllInterviewReportController, getInterviewReportByIdController , generateResumePdfController};

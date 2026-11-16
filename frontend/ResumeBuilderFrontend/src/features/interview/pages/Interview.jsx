@@ -11,12 +11,17 @@ import {
   Printer,
   Compass,
   Lightbulb,
-  SlidersHorizontal
+  SlidersHorizontal,
+  FileDown,
+  FileText,
+  Sparkles,
+  Loader2,
+  AlertCircle
 } from "lucide-react";
 
 export default function Interview({ onBack }) {
   const navigate = useNavigate();
-  const { report, setReport } = useInterview();
+  const { report, setReport, handleGenerateResume } = useInterview();
 
   const handleBack = (e) => {
     if (e) {
@@ -50,6 +55,40 @@ export default function Interview({ onBack }) {
 
   // Copy feedback state
   const [copied, setCopied] = useState(false);
+
+  // Resume PDF Generation states
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  const [pdfSuccess, setPdfSuccess] = useState(false);
+  const [pdfError, setPdfError] = useState(null);
+
+  // Download Tailored Resume PDF using interviewReportId
+  const handleDownloadResume = async () => {
+    const reportId = report?._id || report?.id;
+    if (!reportId) {
+      setPdfError("Interview report ID not found. Please re-run the evaluation.");
+      return;
+    }
+
+    try {
+      setIsGeneratingPdf(true);
+      setPdfError(null);
+      setPdfSuccess(false);
+
+      if (typeof handleGenerateResume === "function") {
+        await handleGenerateResume(reportId);
+      } else {
+        throw new Error("handleGenerateResume handler is not available");
+      }
+
+      setPdfSuccess(true);
+      setTimeout(() => setPdfSuccess(false), 4000);
+    } catch (err) {
+      console.error("Resume generation error:", err);
+      setPdfError(err?.message || "Failed to generate tailored resume. Please try again.");
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
 
   // If no report is loaded, show a clean fallback prompt
   if (!report) {
@@ -163,7 +202,37 @@ export default function Interview({ onBack }) {
           </div>
 
           {/* Action buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Generate Tailored Resume Button */}
+            <button
+              type="button"
+              disabled={isGeneratingPdf}
+              onClick={handleDownloadResume}
+              className={`flex items-center gap-1.5 rounded-lg border px-3.5 py-1.5 text-xs font-medium transition-all ${
+                pdfSuccess
+                  ? "border-emerald-500/40 bg-emerald-500/20 text-emerald-300"
+                  : "border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:border-emerald-500/50 hover:bg-emerald-500/20 hover:text-white"
+              } disabled:cursor-not-allowed disabled:opacity-50`}
+              title="Download tailored resume PDF synthesized from this interview evaluation"
+            >
+              {isGeneratingPdf ? (
+                <>
+                  <Loader2 size={13} className="animate-spin text-emerald-400" />
+                  <span>Synthesizing Resume...</span>
+                </>
+              ) : pdfSuccess ? (
+                <>
+                  <Check size={13} className="text-emerald-400" />
+                  <span>Resume Downloaded</span>
+                </>
+              ) : (
+                <>
+                  <Sparkles size={13} className="text-emerald-400" />
+                  <span>Generate Tailored Resume</span>
+                </>
+              )}
+            </button>
+
             <button
               type="button"
               onClick={handleCopySummary}
@@ -183,6 +252,23 @@ export default function Interview({ onBack }) {
             </button>
           </div>
         </header>
+
+        {/* Global Error Alert for Resume PDF */}
+        {pdfError && (
+          <div className="mt-4 flex items-center justify-between rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-xs text-rose-300">
+            <div className="flex items-center gap-2">
+              <AlertCircle size={15} className="shrink-0 text-rose-400" />
+              <span>{pdfError}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setPdfError(null)}
+              className="text-xs font-mono text-rose-400 hover:text-rose-200"
+            >
+              ✕
+            </button>
+          </div>
+        )}
 
         {/* Hero Executive Score Banner (No Tacky Gradients) */}
         <section className="mt-8 rounded-3xl border border-white/[0.08] bg-[#0E1017] p-6 shadow-2xl sm:p-8">
@@ -319,6 +405,80 @@ export default function Interview({ onBack }) {
         {/* Tab 1: Executive Overview */}
         {activeTab === "overview" && (
           <div className="mt-8 space-y-8">
+            {/* AI-Synthesized Tailored Resume Callout Banner */}
+            <div className="relative overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-[#0E1318] via-[#0E1017] to-[#0A0E14] p-6 shadow-xl sm:p-7">
+              {/* Subtle Ambient Radial Glow */}
+              <div className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full bg-emerald-500/10 blur-3xl" />
+
+              <div className="relative z-10 flex flex-col justify-between gap-6 md:flex-row md:items-center">
+                <div className="max-w-2xl">
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
+                      <Sparkles size={13} />
+                    </span>
+                    <span className="text-[11px] font-medium tracking-wider text-emerald-400 uppercase">
+                      AI Resume Generation
+                    </span>
+                    <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 font-mono text-[9px] text-slate-400">
+                      NEW FEATURE
+                    </span>
+                  </div>
+
+                  <h3 className="mt-2 text-base font-medium text-white sm:text-lg">
+                    Generate Role-Tailored Resume
+                  </h3>
+                  <p className="mt-1 text-xs leading-relaxed text-slate-400 sm:text-sm">
+                    Synthesize an ATS-optimized PDF resume tailored specifically to this position. Automatically addresses the {skillGap.length} identified competency gaps and emphasizes your aligned strengths.
+                  </p>
+
+                  {/* Highlights Pills */}
+                  <div className="mt-3 flex flex-wrap items-center gap-2 text-[11px] text-slate-400">
+                    <span className="inline-flex items-center gap-1.5 rounded-lg border border-white/[0.06] bg-white/[0.02] px-2.5 py-1">
+                      <FileText size={12} className="text-slate-400" />
+                      Role: <strong className="font-medium text-slate-300">{title}</strong>
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 rounded-lg border border-white/[0.06] bg-white/[0.02] px-2.5 py-1">
+                      <Check size={12} className="text-emerald-400" />
+                      Fit Score: <strong className="font-medium text-slate-300">{matchScore}%</strong>
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 rounded-lg border border-white/[0.06] bg-white/[0.02] px-2.5 py-1">
+                      <BrainCircuit size={12} className="text-indigo-400" />
+                      Gaps Addressed: <strong className="font-medium text-slate-300">{skillGap.length}</strong>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex shrink-0 flex-col items-start gap-2 md:items-end">
+                  <button
+                    type="button"
+                    disabled={isGeneratingPdf}
+                    onClick={handleDownloadResume}
+                    className="group flex cursor-pointer items-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-500/15 px-5 py-2.5 text-xs font-medium text-emerald-300 shadow-lg shadow-emerald-950/20 transition-all hover:border-emerald-500/60 hover:bg-emerald-500/25 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {isGeneratingPdf ? (
+                      <>
+                        <Loader2 size={14} className="animate-spin text-emerald-400" />
+                        <span>Synthesizing Resume...</span>
+                      </>
+                    ) : pdfSuccess ? (
+                      <>
+                        <Check size={14} className="text-emerald-400" />
+                        <span className="text-emerald-200">Downloaded to Device</span>
+                      </>
+                    ) : (
+                      <>
+                        <FileDown size={14} className="transition-transform group-hover:translate-y-0.5 text-emerald-400" />
+                        <span>Download Tailored Resume</span>
+                      </>
+                    )}
+                  </button>
+                  <span className="text-[10px] text-slate-500">
+                    Report Reference: <span className="font-mono text-slate-400">{report?._id ? `${report._id.slice(0, 8)}...` : "Active"}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
             {/* Critical Priorities */}
             <div>
               <div className="mb-4 flex items-center justify-between">
@@ -720,8 +880,8 @@ export default function Interview({ onBack }) {
           </div>
         )}
 
-        {/* Bottom Back Button */}
-        <div className="mt-12 flex items-center justify-between border-t border-white/[0.06] pt-6">
+        {/* Bottom Action Bar */}
+        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-white/[0.06] pt-6">
           <button
             type="button"
             onClick={handleBack}
@@ -731,9 +891,38 @@ export default function Interview({ onBack }) {
             <span>Return to Workspace to run another assessment</span>
           </button>
 
-          <span className="text-[11px] text-slate-600">
-            Saved to Analysis Archive
-          </span>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              disabled={isGeneratingPdf}
+              onClick={handleDownloadResume}
+              className={`flex items-center gap-1.5 rounded-lg border px-3.5 py-1.5 text-xs font-medium transition-all ${
+                pdfSuccess
+                  ? "border-emerald-500/40 bg-emerald-500/20 text-emerald-300"
+                  : "border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:border-emerald-500/50 hover:bg-emerald-500/20 hover:text-white"
+              } disabled:cursor-not-allowed disabled:opacity-50`}
+            >
+              {isGeneratingPdf ? (
+                <>
+                  <Loader2 size={13} className="animate-spin text-emerald-400" />
+                  <span>Synthesizing Resume...</span>
+                </>
+              ) : pdfSuccess ? (
+                <>
+                  <Check size={13} className="text-emerald-400" />
+                  <span>Resume Downloaded</span>
+                </>
+              ) : (
+                <>
+                  <FileDown size={13} />
+                  <span>Download Tailored Resume</span>
+                </>
+              )}
+            </button>
+            <span className="text-[11px] text-slate-600">
+              Saved to Analysis Archive
+            </span>
+          </div>
         </div>
       </div>
     </div>
