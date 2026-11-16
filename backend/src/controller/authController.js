@@ -103,10 +103,14 @@ async function loginUserController(req, res) {
         
     }, process.env.JWT_SECRET, { expiresIn: "1d" })
 
-    res.cookie("token", token, {
+    const cookieOptions = {
         httpOnly: true,
-        secure: true,
-    })
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        maxAge: 24 * 60 * 60 * 1000,
+        };
+
+    res.cookie("token", token, cookieOptions);
     return res.status(200).json({
         message: "User logged in successfully",
         success: true,
@@ -151,7 +155,14 @@ async function logoutUserController(req, res) {
         await tokenBlacklistModel.create({
             token:token
         })
-        res.clearCookie("token");
+        const cookieOptions = {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            maxAge: 24 * 60 * 60 * 1000,
+        };
+
+        res.cookie("token", token, cookieOptions);
         return res.status(200).json({
             message:"User logged out successfully",
             success:true
