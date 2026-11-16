@@ -1,6 +1,7 @@
-# 🚀 SkillGapStudio — AI Resume & Job Description Gap Analyzer & Interview Prep Engine
 
-> An end-to-end, full-stack MERN application powered by Google Gemini that benchmarks candidate resumes against targeted job descriptions, exposes critical competency discrepancies, fires dynamic situational interview scenarios, and crafts a day-by-day preparation roadmap.
+# 🚀 SkillGapStudio — AI Resume Analyzer, Optimizer & Interview Prep Engine
+
+> An end-to-end, full-stack MERN application powered by Google Gemini that benchmarks candidate resumes against targeted job descriptions, exposes critical competency discrepancies, generates dynamic interview scenarios, crafts a day-by-day preparation roadmap, and helps candidates enhance their resumes for specific job opportunities.
 
 ---
 
@@ -9,10 +10,12 @@
 Most traditional Application Tracking Systems (ATS) and online resume checkers rely on **dumb keyword density algorithms**—if a candidate uses the word *"PostgreSQL"* instead of *"relational database"*, they get rejected. Furthermore, standard scanners leave candidates completely in the dark regarding **how to actually prepare** for the technical interview.
 
 **SkillGapStudio** eliminates this guesswork:
+
 1. **Stateless PDF Ingestion**: Extracts verified technologies, experience, and impact metrics directly from uploaded resume PDFs.
 2. **Semantic Competency Delta Mapping**: Leverages Google Gemini with structured Zod output validation to calculate true architectural alignment.
 3. **Dynamic Screening Simulator**: Generates evaluator-grade technical and behavioral interview questions tailored specifically around detected gaps.
 4. **Actionable 7-Day Roadmap**: Formulates a daily mastery plan with interactive module tracking so candidates can systematically bridge their gaps before interview day.
+5. **AI-Powered Resume Enhancement**: Helps candidates improve and tailor their resume content according to the target job description, making relevant skills and experience clearer to recruiters.
 
 ---
 
@@ -67,6 +70,13 @@ Most traditional Application Tracking Systems (ATS) and online resume checkers r
 * **Curated Day-by-Day Roadmap**: Interactive checklist where candidates can mark study modules complete (`X / Y completed`).
 * **Utility Features**: One-click brief copying to clipboard and clean print/export PDF formatting.
 
+### 5. ✨ AI-Powered Resume Enhancement
+* **Job-Specific Resume Tailoring**: Enhances the candidate's resume according to the job description used for the analysis.
+* **Relevant Content Improvement**: Helps refine resume content so that relevant skills, projects, and experience are presented more clearly for the target role.
+* **Better Job Description Alignment**: Aligns the wording of the resume with relevant requirements and terminology from the job description.
+* **Candidate-Focused Enhancement**: Uses the candidate's existing resume information as the basis for improvements. Candidates should review the generated content to ensure that all details remain accurate.
+* **Improved Application Readiness**: Helps candidates present their qualifications more effectively for a specific opportunity. Resume enhancement cannot guarantee shortlisting or selection.
+
 ---
 
 ## 🏛️ System Architecture
@@ -79,13 +89,14 @@ flowchart TD
         Home["Workspace Upload Cockpit (/home)"]
         Drawer["Right-Edge Archive Drawer"]
         Interview["Interview Results Deck (/interview)"]
+        Resume["AI Resume Enhancement"]
     end
 
     subgraph Server ["Backend (Node.js + Express 5)"]
         AuthMiddleware["JWT Auth Middleware & Blacklist Check"]
         FileMiddleware["Multer Memory Buffer"]
         PDFParser["pdf-parse (In-Memory Extraction)"]
-        GeminiService["Google GenAI SDK (gemini-3.6-flash + Zod)"]
+        GeminiService["Google GenAI SDK (Gemini + Zod)"]
     end
 
     subgraph Storage ["Database (MongoDB)"]
@@ -103,6 +114,8 @@ flowchart TD
     GeminiService -->|Structured JSON| ReportCol
     ReportCol --> Interview
     ReportCol --> Drawer
+    Interview --> Resume
+    Resume --> GeminiService
 ```
 
 ---
@@ -296,9 +309,12 @@ npm run dev
 ---
 
 ## 🎓 Academic / Student Note
+
 This project was conceptualized and developed as a comprehensive demonstration of:
+
 - Full-stack MERN architecture with separation of concerns (MVC backend, feature-sliced frontend).
 - Practical generative AI engineering using the official Google Gen AI SDK.
+- AI-assisted resume enhancement based on job-description requirements.
 - Modern UX/UI design principles prioritizing micro-interactions and accessibility.
 
 **Rudransh Khare**.
