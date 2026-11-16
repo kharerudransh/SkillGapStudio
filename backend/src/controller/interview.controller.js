@@ -5,6 +5,7 @@ const interviewReportModel = require("../model/interviewReport.model");
 
 //To generate interview report
 async function generateInterviewReportController(req, res) {
+    let parser; 
     try {
 
         // 1. Validate uploaded file
@@ -26,7 +27,7 @@ async function generateInterviewReportController(req, res) {
         }
 
         // 3. Extract text from PDF
-        const parser = new pdfParse.PDFParse({
+         parser = new pdfParse.PDFParse({
             data: new Uint8Array(req.file.buffer)
         });
 
@@ -73,7 +74,7 @@ async function generateInterviewReportController(req, res) {
         });
     }
     finally {
-        await parser.destroy();
+        if (parser) await parser.destroy();      
     }
 }
 
