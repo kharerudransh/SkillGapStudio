@@ -11,7 +11,8 @@ import {
   Cpu,
   ArrowUpRight,
   Check,
-  X
+  X,
+  FileDown
 } from "lucide-react";
 
 const DEMO_SIMULATION = [
@@ -26,7 +27,8 @@ const DEMO_SIMULATION = [
       { name: "Redis Cache Sharding", severity: "Medium" }
     ],
     sampleQuestion:
-      "How would you ensure exactly-once webhook processing across distributed Node.js microservices under intermittent network partitions?"
+      "How would you ensure exactly-once webhook processing across distributed Node.js microservices under intermittent network partitions?",
+    tailoredBadge: "Kafka & Redis Resilience Resume Synthesized"
   },
   {
     id: "ai",
@@ -39,7 +41,8 @@ const DEMO_SIMULATION = [
       { name: "vLLM Model Quantization", severity: "Medium" }
     ],
     sampleQuestion:
-      "Explain the latency versus recall trade-offs between HNSW dense indexing and BM25 sparse keyword ranking in multi-tenant RAG systems."
+      "Explain the latency versus recall trade-offs between HNSW dense indexing and BM25 sparse keyword ranking in multi-tenant RAG systems.",
+    tailoredBadge: "Hybrid RAG & Quantization Resume Synthesized"
   },
   {
     id: "devops",
@@ -52,7 +55,8 @@ const DEMO_SIMULATION = [
       { name: "Istio Service Mesh Security", severity: "Medium" }
     ],
     sampleQuestion:
-      "Walk through diagnosing an intermittent 200ms latency spike in an ingress envoy proxy without restarting live Kubernetes pods."
+      "Walk through diagnosing an intermittent 200ms latency spike in an ingress envoy proxy without restarting live Kubernetes pods.",
+    tailoredBadge: "eBPF & Istio Mesh Resume Synthesized"
   }
 ];
 
@@ -84,6 +88,13 @@ const WORKFLOW_STEPS = [
     tag: "ADAPTIVE ROADMAP",
     desc: "Synthesizes a structured daily learning roadmap with actionable modules, system design topics, and interactive checklists.",
     icon: Target
+  },
+  {
+    num: "05",
+    title: "Tailored Resume Synthesis",
+    tag: "ATS PDF EXPORT",
+    desc: "Generates an updated, job-targeted resume with 1-click PDF download that bridges detected competency gaps.",
+    icon: FileDown
   }
 ];
 
@@ -107,6 +118,11 @@ const COMPARISONS = [
     feature: "Execution & Learning Path",
     traditional: "Static feedback report with no study structure",
     skillgap: "Curated day-by-day preparation roadmap with interactive progress tracking"
+  },
+  {
+    feature: "Role-Tailored Resume Generation",
+    traditional: "Manual rewriting in Word with zero gap awareness",
+    skillgap: "Automated 1-click ATS resume synthesis engineered directly from report findings"
   }
 ];
 
@@ -262,6 +278,9 @@ export default function LandingPage() {
               <a href="#simulator" className="transition-colors hover:text-white">
                 Live Simulator
               </a>
+              <a href="#resume-engine" className="transition-colors hover:text-white">
+                Resume Engine
+              </a>
               <a href="#comparison" className="transition-colors hover:text-white">
                 Comparison
               </a>
@@ -291,7 +310,7 @@ export default function LandingPage() {
         <section className="mx-auto flex w-full max-w-6xl flex-col items-center px-6 pt-16 pb-20 text-center sm:px-10 lg:pt-24">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-3.5 py-1.5 text-[11px] font-medium tracking-wide text-slate-300">
             <Sparkles size={12} className="text-slate-400" />
-            <span>AI Career Gap Intelligence & Interview Prep Engine</span>
+            <span>AI Career Gap Intelligence, Scenario Simulator & Resume Synthesis</span>
           </div>
 
           <h1 className="mt-6 max-w-4xl text-4xl font-light tracking-tight text-white sm:text-6xl sm:leading-[1.12]">
@@ -301,8 +320,8 @@ export default function LandingPage() {
 
           <p className="mt-6 max-w-2xl text-sm leading-relaxed text-slate-400 sm:text-base">
             Upload your resume alongside any target job description. Our AI analyzes
-            competency deltas, identifies high-severity skill gaps, generates targeted
-            technical scenario questions, and crafts a day-by-day preparation roadmap.
+            competency deltas, generates tailored technical interview scenarios, crafts a
+            day-by-day mastery plan, and synthesizes an ATS-ready resume bridging your detected gaps.
           </p>
 
           {/* Action CTAs */}
@@ -328,22 +347,22 @@ export default function LandingPage() {
           </div>
 
           {/* Key Metrics Strip */}
-          <div className="mt-14 grid w-full max-w-3xl grid-cols-2 gap-4 border-y border-white/[0.06] py-6 sm:grid-cols-4">
+          <div className="mt-14 grid w-full max-w-4xl grid-cols-2 gap-4 border-y border-white/[0.06] py-6 sm:grid-cols-4">
             <div>
               <div className="font-mono text-2xl font-light text-white">94.8%</div>
               <div className="mt-0.5 text-[11px] text-slate-500">Skill Alignment Accuracy</div>
             </div>
             <div>
-              <div className="font-mono text-2xl font-light text-white">PDF / DOCX</div>
-              <div className="mt-0.5 text-[11px] text-slate-500">Direct Resume Ingestion</div>
-            </div>
-            <div>
               <div className="font-mono text-2xl font-light text-white">Dynamic</div>
-              <div className="mt-0.5 text-[11px] text-slate-500">Gap-Driven Questions</div>
+              <div className="mt-0.5 text-[11px] text-slate-500">Gap-Driven Question Deck</div>
             </div>
             <div>
               <div className="font-mono text-2xl font-light text-white">7-Day</div>
               <div className="mt-0.5 text-[11px] text-slate-500">Structured Roadmap</div>
+            </div>
+            <div>
+              <div className="font-mono text-2xl font-light text-emerald-400">1-Click</div>
+              <div className="mt-0.5 text-[11px] text-slate-500">Tailored Resume PDF</div>
             </div>
           </div>
         </section>
@@ -525,6 +544,19 @@ export default function LandingPage() {
                   </div>
                 </div>
 
+                {/* AI Tailored Resume Output Pill */}
+                <div className="flex items-center justify-between rounded-xl border border-emerald-500/20 bg-emerald-500/[0.04] p-3 text-xs">
+                  <div className="flex items-center gap-2">
+                    <FileDown size={14} className="text-emerald-400" />
+                    <span className="text-slate-300 font-medium">
+                      {selectedSimulation.tailoredBadge}
+                    </span>
+                  </div>
+                  <span className="rounded border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] text-emerald-300">
+                    1-CLICK PDF
+                  </span>
+                </div>
+
                 <Link
                   to="/register"
                   className="inline-flex items-center gap-1.5 text-xs font-medium text-white transition-colors hover:text-slate-300"
@@ -543,18 +575,18 @@ export default function LandingPage() {
         <section id="how-it-works" className="mx-auto w-full max-w-6xl px-6 py-20 sm:px-10">
           <div className="text-center">
             <span className="text-[11px] font-medium tracking-wider text-slate-500 uppercase">
-              The 4-Pillar Pipeline
+              The 5-Pillar Pipeline
             </span>
             <h2 className="mt-2 text-2xl font-light text-white sm:text-3xl">
-              From Raw PDF to Complete Interview Readiness
+              From Raw PDF to Complete Interview Readiness & Tailored Resume
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-xs text-slate-400 sm:text-sm">
               Traditional platforms stop at keywords. We turn your delta into a
-              structured study plan and scenario simulator.
+              structured study plan, scenario simulator, and target-aligned resume.
             </p>
           </div>
 
-          <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
             {WORKFLOW_STEPS.map((s) => {
               const Icon = s.icon;
               return (
@@ -585,6 +617,160 @@ export default function LandingPage() {
                 </div>
               );
             })}
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* RESUME SYNTHESIS ENGINE SHOWCASE                                          */}
+        {/* ========================================================================= */}
+        <section id="resume-engine" className="mx-auto w-full max-w-6xl px-6 py-16 sm:px-10">
+          <div className="relative overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-[#0E1318] via-[#0E1017] to-[#0A0E14] p-8 shadow-2xl sm:p-12">
+            {/* Ambient Lighting Sheen */}
+            <div className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-emerald-500/10 blur-[100px]" />
+            <div className="pointer-events-none absolute -left-16 -bottom-16 h-72 w-72 rounded-full bg-slate-800/20 blur-[100px]" />
+
+            <div className="relative z-10 grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
+              {/* Left Column: Description & Feature Highlights */}
+              <div className="lg:col-span-7">
+                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-[11px] font-medium tracking-wide text-emerald-300">
+                  <Sparkles size={12} className="text-emerald-400" />
+                  <span>NEW CAPABILITY · AI RESUME SYNTHESIS</span>
+                </div>
+
+                <h2 className="mt-4 text-2xl font-light tracking-tight text-white sm:text-4xl sm:leading-tight">
+                  Turn Gap Analysis Into a <br className="hidden sm:inline" />
+                  <span className="font-normal text-white">Targeted, ATS-Optimized Resume.</span>
+                </h2>
+
+                <p className="mt-4 text-xs leading-relaxed text-slate-400 sm:text-sm">
+                  Identifying skill gaps is only half the battle. Once your interview evaluation deck is generated, SkillGapStudio automatically synthesizes a tailor-made resume engineered to match the employer's expectations while bridging detected discrepancies.
+                </p>
+
+                {/* 3 Value Pillars */}
+                <div className="mt-6 space-y-4">
+                  <div className="flex items-start gap-3.5">
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
+                      <Check size={14} />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-medium text-white sm:text-sm">
+                        Semantic Job Alignment
+                      </h4>
+                      <p className="mt-0.5 text-xs text-slate-400">
+                        Restructures your technical skill taxonomy and achievements around the exact vocabulary of the job description.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3.5">
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
+                      <Check size={14} />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-medium text-white sm:text-sm">
+                        Strategic Gap Remediation
+                      </h4>
+                      <p className="mt-0.5 text-xs text-slate-400">
+                        Contextualizes your project contributions to address high and medium severity competencies flagged in your interview report.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3.5">
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
+                      <Check size={14} />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-medium text-white sm:text-sm">
+                        Instant PDF Production
+                      </h4>
+                      <p className="mt-0.5 text-xs text-slate-400">
+                        Downloads a publication-grade, ATS-compatible PDF resume with zero formatting bugs in a single click.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-8 flex flex-wrap items-center gap-4">
+                  <Link
+                    to="/register"
+                    className="flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-xs font-medium text-slate-950 transition-colors hover:bg-slate-200"
+                  >
+                    <span>Generate Tailored Resume</span>
+                    <ArrowRight size={14} />
+                  </Link>
+
+                  <span className="text-[11px] text-slate-500">
+                    Integrated directly inside your evaluation report deck.
+                  </span>
+                </div>
+              </div>
+
+              {/* Right Column: Visual Mockup Card */}
+              <div className="lg:col-span-5">
+                <div className="rounded-2xl border border-white/10 bg-black/60 p-5 shadow-2xl backdrop-blur-xl">
+                  {/* Header of mock resume */}
+                  <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+                    <div className="flex items-center gap-2.5">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04]">
+                        <FileText size={16} className="text-emerald-400" />
+                      </div>
+                      <div>
+                        <div className="text-xs font-medium text-white">Synthesized_Resume.pdf</div>
+                        <div className="text-[10px] text-slate-500">Auto-tailored from Report ID #9f2a</div>
+                      </div>
+                    </div>
+                    <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] text-emerald-300">
+                      ATS 98%
+                    </span>
+                  </div>
+
+                  {/* Body preview */}
+                  <div className="mt-4 space-y-3 font-mono text-[11px]">
+                    <div className="rounded-lg border border-white/[0.05] bg-white/[0.02] p-3">
+                      <div className="flex items-center justify-between text-slate-400">
+                        <span>Target Role Match</span>
+                        <span className="text-white">Senior Platform Engineer</span>
+                      </div>
+                      <div className="mt-1.5 h-1.5 w-full rounded-full bg-white/[0.08]">
+                        <div className="h-1.5 rounded-full bg-emerald-400" style={{ width: "94%" }} />
+                      </div>
+                    </div>
+
+                    <div className="rounded-lg border border-white/[0.05] bg-white/[0.02] p-3">
+                      <div className="text-[10px] uppercase text-slate-500">Addressed Gap Competencies</div>
+                      <div className="mt-1.5 flex flex-wrap gap-1.5">
+                        <span className="rounded border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.5 text-[10px] text-emerald-300">
+                          ✓ Kafka Event Mesh
+                        </span>
+                        <span className="rounded border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.5 text-[10px] text-emerald-300">
+                          ✓ Distributed Caching
+                        </span>
+                        <span className="rounded border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.5 text-[10px] text-emerald-300">
+                          ✓ Envoy Ingress
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="rounded-lg border border-white/[0.05] bg-white/[0.02] p-3">
+                      <div className="text-[10px] uppercase text-slate-500">Quantified Impact Bullets</div>
+                      <p className="mt-1 text-[10px] font-sans leading-relaxed text-slate-300">
+                        "Re-architected real-time ingestion pipelines using distributed streaming, mitigating network partition latency by 34%."
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Mock Action */}
+                  <div className="mt-4 flex items-center justify-between border-t border-white/[0.08] pt-3.5">
+                    <span className="text-[10px] text-slate-500">Format: Standard PDF/A-1</span>
+                    <div className="flex items-center gap-1.5 text-xs font-medium text-emerald-400">
+                      <FileDown size={14} />
+                      <span>1-Click Download</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -691,6 +877,9 @@ export default function LandingPage() {
               </Link>
               <a href="#simulator" className="hover:text-slate-300 transition-colors">
                 Simulator
+              </a>
+              <a href="#resume-engine" className="hover:text-slate-300 transition-colors">
+                Resume Engine
               </a>
               <span className="text-slate-600">System Live</span>
             </div>
